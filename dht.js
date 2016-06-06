@@ -1,7 +1,5 @@
-var ed = require('ed25519-supercop')
 var jf = require('jsonfile')
 var DHT = require('bittorrent-dht')
-var ed = require('ed25519-supercop')
 var crypto = require('crypto')
 
 var kade = require('./main.js')
@@ -11,7 +9,7 @@ kade.dht = {}
 kade.dht.readLocalParameters = function(){
 
   console.log('\n  Reading keypair');
-  var params = jf.readFileSync(kade.conf.keypairLocation)
+  var params = jf.readFileSync(kade.conf.location)
 
   // Restore buffers
   params.pub = new Buffer(params.pub)
@@ -25,36 +23,38 @@ kade.dht.readLocalParameters = function(){
 kade.dht.start = function(){
 
   kade.dht.readLocalParameters()
-
   kade.log('Starting MLDHT')
-  kade.mldht = new DHT({ bootstrap: true, verify: ed.verify })
-
-  kade.dht.timeoutToken = setTimeout(function () {
-    kade.die('DHT Timeout. Can\'t seems to be able to connect to the internet.')
-  }, kade.conf.dhtTimeout * 1000)
+  kade.dht.attemptStart()
 }
 
+kade.dht.attemptStart =  function () {
+
+  kade.mldht = new DHT({ bootstrap: true, verify: kade.ed.verify })
+
+  kade.dht.timeoutToken = setTimeout(function () {
+    kade.log('DHT Timeout. Can\'t seems to be able to connect to the internet.')
+    kade.mldht.destroy()
+    kade.dht.attemptStart()
+  }, kade.conf.dhtTimeout * 1000)
+}
 
 kade.dht.publish = function(vals){
 
   // Update and write token
   kade.parameters.token++
-  jf.writeFileSync(kade.conf.keypairLocation, kade.parameters)
+  jf.writeFileSync(kade.conf.location, kade.parameters)
 
   // Set opts
   var opts = {
     k: kade.parameters.pub,
     seq: kade.parameters.token,
     v: kade.encrypt(vals),
-    sign: function (buf) {
-      var sig = ed.sign(buf, kade.parameters.pub, kade.parameters.priv)
-      return sig
-    }
+    sign: kade.sign
   }
 
   kade.mldht.put(opts, function (err, hash) {
-    if(err) kade.conf.die(err)
-    console.log('\n    > DHT updated')
+    if(err) kade.die(err)
+    console.log('    > DHT updated')
     //kade.dht.check(hash)
   })
 }

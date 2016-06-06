@@ -1,6 +1,9 @@
 var kade = {}
 module.exports = kade;
 
+var events = require('events')
+kade.ev = new events.EventEmitter()
+
 require('./conf.js')
 require('./firstStart.js')
 require('./dht.js')

@@ -1,4 +1,3 @@
-var ed = require('ed25519-supercop')
 var jf = require('jsonfile')
 var kade = require('./main.js')
 var sha1 = require('simple-sha1')
@@ -7,7 +6,7 @@ var crypto = require('crypto')
 
 kade.isFirstStart = function(){
   try {
-    jf.readFileSync(kade.conf.keypairLocation)
+    jf.readFileSync(kade.conf.location)
   } catch (e) {
     return true
   }
@@ -17,14 +16,14 @@ kade.isFirstStart = function(){
 
 kade.firstStart = function () {
   kade.log('kade first start !');
-  kade.genKeypair(kade.conf.keyName)
+  kade.genKeypair(kade.conf.fileName)
 }
 
 
 kade.genKeypair = function(fn){
 
   kade.log('Generating new keypair ' + fn);
-  var keypair = ed.createKeyPair(ed.createSeed())
+  var keypair = kade.ed.createKeyPair(kade.ed.createSeed())
 
   kade.log('Public Key : ' + keypair.publicKey.toString('hex') )
   // kade.log('Secret Key : ' + keypair.secretKey.toString('hex') )
@@ -37,6 +36,6 @@ kade.genKeypair = function(fn){
     pwd: crypto.randomBytes(50)
   }
 
-  jf.writeFileSync(kade.conf.keypairLocation, params)
+  jf.writeFileSync(kade.conf.location, params)
   kade.log('Keys generated !\n');
 }
