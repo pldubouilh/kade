@@ -1,0 +1,44 @@
+{
+  "name": "kade",
+  "version": "0.0.1",
+  "description": "kade node-js gateway",
+  "main": "main.js",
+  "dependencies": {
+    "bittorrent-dht": "^6.4.2",
+    "colors": "^1.1.2",
+    "ed25519-supercop": "^1.0.2",
+    "fs": "0.0.2",
+    "jsonfile": "^2.3.1",
+    "prompt": "^1.0.0",
+    "simple-sha1": "^2.0.8",
+    "webtorrent": "^0.63.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pldubouilh/kade.git"
+  },
+  "keywords": [
+    "dht",
+    "kade",
+    "iot",
+    "decentralised",
+    "decentralized",
+    "decentralisation",
+    "decentralization",
+    "bittorrent",
+    "bittorrent-dht",
+    "mldht",
+    "mainline-dht",
+    "dht"
+  ],
+  "author": "pldubouilh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pldubouilh/kade/issues"
+  },
+  "homepage": "https://github.com/pldubouilh/kade#readme"
+}
