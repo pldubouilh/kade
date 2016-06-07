@@ -12,16 +12,25 @@ kade.sensors.list = [{
   }]
 
 kade.sensors.refeshValues = function () {
-  console.log('\n')
-  for (sensor in kade.sensors.list){
-    console.log('  Getting value of sensor ' +  kade.sensors.list[sensor].name);
-  }
+  setTimeout(kade.sensors.refeshValues, kade.conf.refreshRateSensors * 1000)
 
-  setTimeout(kade.sensors.postValues, kade.conf.refreshRateSensors * 1000)
+  kade.log('Getting sensors values');
+  for (sensor in kade.sensors.list){
+    console.log('    * Getting value of sensor : ' +  kade.sensors.list[sensor].name);
+  }
 }
 
-kade.sensors.postValues = function() {
-  kade.log('Posting values on the DHT ')
-  kade.dht.publish( JSON.stringify(kade.sensors.list) )
-  setTimeout(kade.sensors.postValues, kade.conf.refreshRateDht * 1000)
+kade.sensors.getValues = function() {
+  return JSON.stringify(kade.sensors.list)
+}
+
+kade.sensors.start = function () {
+  kade.log('Starting sensors process');
+  kade.sensors.refeshValues()
+}
+
+kade.sensors.autoPost = function () {
+  setTimeout(kade.sensors.autoPost, kade.conf.refreshRateSensors * 1000)
+  kade.log('Posting sensors values on the DHT...')
+  kade.dht.publish( kade.sensors.getValues() )
 }

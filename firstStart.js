@@ -15,14 +15,14 @@ kade.isFirstStart = function(){
 
 
 kade.firstStart = function () {
-  kade.log('kade first start !');
-  kade.genKeypair(kade.conf.fileName)
+  kade.log('first start !');
+  kade.genKeypair()
 }
 
 
-kade.genKeypair = function(fn){
+kade.genKeypair = function(){
 
-  kade.log('Generating new keypair ' + fn);
+  kade.log('Generating new keypair ' + kade.conf.fileName );
   var keypair = kade.ed.createKeyPair(kade.ed.createSeed())
 
   kade.log('Public Key : ' + keypair.publicKey.toString('hex') )

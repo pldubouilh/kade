@@ -1,40 +1,34 @@
-var jf = require('jsonfile')
 var DHT = require('bittorrent-dht')
-var crypto = require('crypto')
-
 var kade = require('./main.js')
+var jf = require('jsonfile')
 
 kade.dht = {}
 
-kade.dht.readLocalParameters = function(){
-
-  console.log('\n  Reading keypair');
-  var params = jf.readFileSync(kade.conf.location)
-
-  // Restore buffers
-  params.pub = new Buffer(params.pub)
-  params.priv = new Buffer(params.priv)
-  params.salt = new Buffer(params.salt)
-  params.pwd = new Buffer(params.pwd)
-  kade.parameters = params
-}
 
 
-kade.dht.start = function(){
-
-  kade.dht.readLocalParameters()
+kade.dht.start = function () {
   kade.log('Starting MLDHT')
+  kade.dht.connectionAttempt = 0
   kade.dht.attemptStart()
 }
 
-kade.dht.attemptStart =  function () {
+kade.dht.attemptStart = function (err) {
+
+  if (err){
+    kade.warn('Can\'t contact the DHT. Reconnecting', err)
+    kade.dht.connectionAttempt++
+    if(kade.dht.connectionAttempt > kade.conf.maxAttemptsDht)
+      kade.die('Cant\' reach the DHT. Trying again in 2mns.')
+  }
+
+  if (kade.mldht !== undefined)
+    kade.mldht.destroy()
 
   kade.mldht = new DHT({ bootstrap: true, verify: kade.ed.verify })
 
   kade.dht.timeoutToken = setTimeout(function () {
-    kade.log('DHT Timeout. Can\'t seems to be able to connect to the internet.')
     kade.mldht.destroy()
-    kade.dht.attemptStart()
+    kade.dht.attemptStart('Timeout')
   }, kade.conf.dhtTimeout * 1000)
 }
 
@@ -53,19 +47,24 @@ kade.dht.publish = function(vals){
   }
 
   kade.mldht.put(opts, function (err, hash) {
-    if(err) kade.die(err)
-    console.log('    > DHT updated')
-    //kade.dht.check(hash)
+    if(err)
+      kade.dht.attemptStart(err)
+    else{
+      console.log('    > DHT updated')
+      kade.debug('   > ' + hash.toString('hex'))
+      //kade.dht.check(hash)
+    }
   })
 }
 
 kade.dht.check = function(h){
-  kade.mldht.get(h, function(err, res){
-    debugger;
+  kade.mldht.get(h, function (err, res) {
+    debugger
+    if(err) kade.log(err)
     kade.log(kade.decrypt(res.v))
   })
 }
 
-kade.dht.help = function(){
+kade.dht.help = function () {
   kade.log('Helping fellow gateways')
 }
