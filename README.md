@@ -1,4 +1,5 @@
 # kade Server
+Known Array of Decentralised Elements !
 
 ### Todo
  * Make fancy RPC / API

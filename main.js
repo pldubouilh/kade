@@ -5,6 +5,8 @@ var events = require('events')
 kade.ev = new events.EventEmitter()
 
 require('./conf.js')
+require('./utils.js')
+require('./encryption.js')
 require('./firstStart.js')
 require('./dht.js')
 require('./sensors.js')
@@ -20,7 +22,8 @@ kade.dht.start()
 kade.sensors.start()
 
 kade.mldht.on('ready', function (err) {
-  if(err) kade.dht.attemptStart(err)
+  if(err)
+    kade.dht.attemptStart(err)
 
   clearTimeout(kade.dht.timeoutToken)
   kade.log('MLDHT reached')

@@ -51,7 +51,7 @@ kade.dht.publish = function(vals){
       kade.dht.attemptStart(err)
     else{
       console.log('    > DHT updated')
-      kade.debug('   > ' + hash.toString('hex'))
+      kade.debug('    > ' + hash.toString('hex'))
       //kade.dht.check(hash)
     }
   })
