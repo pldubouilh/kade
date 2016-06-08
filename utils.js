@@ -2,9 +2,8 @@ var kade = require('./main.js')
 var colors = require('colors')
 var jf = require('jsonfile')
 
-kade.readLocalParameters = function () {
-
-  console.log('\n  Reading keypair')
+kade.readParameters = function () {
+  console.log('\n  Reading local parameters')
   var params = jf.readFileSync(kade.conf.location)
 
   // Restore buffers
@@ -13,6 +12,10 @@ kade.readLocalParameters = function () {
   params.salt = new Buffer(params.salt)
   params.pwd = new Buffer(params.pwd)
   kade.parameters = params
+}
+
+kade.saveParameters = function () {
+  jf.writeFileSync(kade.conf.location, kade.parameters)
 }
 
 kade.die = function(err){

@@ -2,6 +2,7 @@
 Known Array of Decentralised Elements !
 
 ### Todo
- * Make fancy RPC / API
+ * RPC
+   * Rudimentary API available. Functionality will come with future dev
  * Start working on a web gui
  * Setup new devices mode

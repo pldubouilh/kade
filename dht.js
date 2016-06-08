@@ -5,7 +5,6 @@ var jf = require('jsonfile')
 kade.dht = {}
 
 
-
 kade.dht.start = function () {
   kade.log('Starting MLDHT')
   kade.dht.connectionAttempt = 0
@@ -36,7 +35,7 @@ kade.dht.publish = function(vals){
 
   // Update and write token
   kade.parameters.token++
-  jf.writeFileSync(kade.conf.location, kade.parameters)
+  kade.saveParameters()
 
   // Set opts
   var opts = {

@@ -33,7 +33,8 @@ kade.genKeypair = function(){
     priv: keypair.secretKey,
     token: 1,
     salt: crypto.randomBytes(50),
-    pwd: crypto.randomBytes(50)
+    pwd: crypto.randomBytes(50),
+    sensors: []
   }
 
   jf.writeFileSync(kade.conf.location, params)
