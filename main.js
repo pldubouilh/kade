@@ -1,5 +1,5 @@
 var kade = {}
-module.exports = kade;
+module.exports = kade
 
 var events = require('events')
 kade.ev = new events.EventEmitter()
