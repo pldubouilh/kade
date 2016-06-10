@@ -17,8 +17,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "nodemon main.js",
-    "debug": "nodemon --exec node-debug --cli  main.js"
+    "test": " which nodemon 1>/dev/null || echo 'ERR: Install nodemon // npm install -g nodemon' && nodemon main.js",
+    "debug": "which nodemon 1>/dev/null || echo 'ERR: Install nodemon // npm install -g nodemon' && nodemon --exec node-debug --cli  main.js"
   },
   "repository": {
     "type": "git",

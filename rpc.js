@@ -1,6 +1,6 @@
 var kade = require('./main.js')
 var express = require('express')
-var uuidvalidate = require('uuid-validate')
+var validateUuid = require('uuid-validate')
 var uuid = require('uuid')
 
 kade.rpc = {}
@@ -19,7 +19,7 @@ kade.rpc.isValid = function (req) {
     return req
   }
   else if (req['uuid'] !== undefined)
-    if ( uuidvalidate(req.uuid) )
+    if ( validateUuid(req.uuid) )
       return req
     else
       return 'ERROR: UUID Provided invalid'
@@ -120,45 +120,66 @@ routerSensors.get('*', function(req, res) {
 // Will match any PUT /sensors/*  >> Amend state of sensor
 routerSensors.put('*', function(req, res) {
 
-  if (req.originalUrl === '/sensors' || req.originalUrl === '/sensors/'){
-    res.json( 'ERROR : Need to provide a sensor name' )
-    return
-  }
-  else if (req.originalUrl.split('/')[5] !== undefined){
-    res.json( 'ERROR : Too much parameters provided' )
-    return
+  var sensorname, val, what
+
+  // treat sensors?name=breakfast&value=off&uuid=a
+  if( Object.keys(req.query).length !== 0 ){
+
+    if ( req.query.name !== undefined )
+      sensorname = req.query.name
+    else if ( req.query.uuid !== undefined )
+      sensorname = req.query.uuid
+
+    what = Object.keys(req.query)[1]
+    val = req.query[what]
   }
 
   // Accept values such as /sensor/oven/temp/200
-  var sensorname = req.originalUrl.split('/')[2]
-  var what = req.originalUrl.split('/')[3]
-  var val = req.originalUrl.split('/')[4]
+  else{
+    if (req.originalUrl === '/sensors' || req.originalUrl === '/sensors/'){
+      res.json( 'ERROR : Need to provide a sensor name' )
+      return
+    }
+    else if (req.originalUrl.split('/')[5] !== undefined){
+      res.json( 'ERROR : Too much parameters provided' )
+      return
+    }
 
+    sensorname = req.originalUrl.split('/')[2]
+    what = req.originalUrl.split('/')[3]
+    val = req.originalUrl.split('/')[4]
+  }
+
+
+  // Find errors
+  if (sensorname === undefined  || sensorname.length === 0  ){
+    res.json( 'ERROR : Need to provide name/uuid' )
+    return
+  }
   if ( what === undefined || val === undefined  || what.length === 0 || val.length === 0 ){
     res.json( 'ERROR : Invalid request' )
     return
   }
 
+  // Try find one sensor
   var sensor = kade.rpc.findOne( sensorname , what )
 
   if (typeof sensor === 'string')
     res.json( sensor ) // error
   else
-    res.json( kade.changePropAndSave(sensor, what, val) )
+    res.json( kade.sensors.changeProp(sensor, what, val) )
 });
 
 
 // Will match any POST /sensors/*  >> Create new
 routerSensors.post('*', function(req, res) {
 
+  // Sanity check
   var sensor = kade.rpc.isValid(req.query)
 
   if( typeof sensor === 'string' )
-    res.json( sensor )
-  else {
-    kade.parameters.sensors.push(sensor)
-    kade.saveParameters()
-    res.json( sensor )
-  }
+    res.json( sensor ) // error
+  else
+    res.json( kade.sensors.pushNewSensor(sensor) )
 
 });

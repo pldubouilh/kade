@@ -14,22 +14,6 @@ kade.readParameters = function () {
   kade.parameters = params
 }
 
-kade.changePropAndSave = function (sensor, what, where){
-  // Find value to change and store
-  var i
-  for ( i=0; i < kade.parameters.sensors.length; i++ ){
-    if( kade.parameters.sensors[i].uuid === sensor.uuid ){
-      if ( kade.parameters.sensors[i][what] !== undefined ) {
-        kade.parameters.sensors[i][what] = where
-        kade.saveParameters()
-        return kade.parameters.sensors[i]
-      }
-      else
-        return 'ERROR: Propriety not found'
-    }
-  }
-}
-
 kade.saveParameters = function () {
   jf.writeFileSync(kade.conf.location, kade.parameters)
 }

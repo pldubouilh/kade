@@ -11,15 +11,17 @@ Known Array of Decentralised Elements !
 ### RPC
 
   * Todo : cert pinning & HTTPS
-  * Provide
+  * Todo : Auth
 
 ```
-GET  sensor                            all items
-GET  sensor/oven                       item(s) details
-GET  sensor/oven/temp                  prop value
+GET  sensor                           all items
+GET  sensor/oven                      item(s) details
+GET  sensor/oven/temp                 prop value
 
-PUT  sensor/oven/temp/180              update value                
+PUT  sensor/oven/temp/180             update value                
+PUT  sensors?                          update value
+     name=oven&value=off        
 
-POST sensors?                          create new sensor (name only compulsory tag)
-    name=oven&uuid=1234&value=off            
+POST  sensors?                        create new sensor (name only compulsory tag)
+      name=oven&value=off
 ```
