@@ -14,14 +14,17 @@ Known Array of Decentralised Elements !
   * Todo : Auth
 
 ```
-GET  sensor                           all items
-GET  sensor/oven                      item(s) details
-GET  sensor/oven/temp                 prop value
 
-PUT  sensor/oven/temp/180             update value                
-PUT  sensors?                          update value
-     name=oven&value=off        
-
-POST  sensors?                        create new sensor (name only compulsory tag)
-      name=oven&value=off
+Request | Path                     |   Definition  
+--------------------------------------------------------------------------------
+GET     | sensor                   |   all items
+GET     | sensor/oven              |   item(s) details
+GET     | sensor/oven/temp         |   prop value
+        |                          |
+PUT     |  sensor/oven/temp/180    |   update value                
+PUT     |  sensors?                |   update value
+        |    name=oven&value=off   |    
+        |                          |
+POST    |  sensors?                |   create new sensor (only compulsory: name)
+        |    name=oven&value=off   |
 ```
