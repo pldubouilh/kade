@@ -10,6 +10,8 @@
     "express": "^4.13.4",
     "fs": "0.0.2",
     "jsonfile": "^2.3.1",
+    "node-createap": "0.0.3",
+    "randomstring": "^1.1.5",
     "simple-sha1": "^2.0.8",
     "uuid": "^2.0.2",
     "uuid-validate": "0.0.2",

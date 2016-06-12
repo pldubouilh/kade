@@ -2,7 +2,7 @@ var jf = require('jsonfile')
 var kade = require('./main.js')
 var sha1 = require('simple-sha1')
 var crypto = require('crypto')
-
+var randomstring = require("randomstring");
 
 kade.isFirstStart = function(){
   try {
@@ -34,6 +34,8 @@ kade.genKeypair = function(){
     token: 1,
     salt: crypto.randomBytes(50),
     pwd: crypto.randomBytes(50),
+    apName: randomstring.generate(10),
+    apKey: randomstring.generate(20),
     sensors: []
   }
 

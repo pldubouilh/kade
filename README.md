@@ -7,6 +7,8 @@ Known Array of Decentralised Elements !
  * Start working on a web gui
  * Setup new devices mode
 
+### Wifi
+ * make create_ap wrapper for temp'd reboot mode
 
 ### RPC
 
@@ -17,6 +19,8 @@ Known Array of Decentralised Elements !
 
 Request | Path                     |   Definition  
 --------------------------------------------------------------------------------
+GET     | reboot/pairing           |   Reboot in pairing mode
+        |                          |
 GET     | sensor                   |   all items
 GET     | sensor/oven              |   item(s) details
 GET     | sensor/oven/temp         |   prop value
