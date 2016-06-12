@@ -25,7 +25,7 @@ kade.die = function(err){
 }
 
 kade.debug = function (msg){
-  if(kade.debug)
+  if(kade.debugFlag)
     console.log(msg.yellow)
 }
 

@@ -11,6 +11,7 @@ kade.sensors.changeProp = function (sensor, what, where){
       if ( kade.parameters.sensors[i][what] !== undefined ) {
         kade.parameters.sensors[i][what] = where
         kade.saveParameters()
+        kade.sensors.postValues()
         return kade.parameters.sensors[i]
       }
       else
@@ -22,9 +23,11 @@ kade.sensors.changeProp = function (sensor, what, where){
 kade.sensors.pushNewSensor = function (sensor){
   kade.parameters.sensors.push(sensor)
   kade.saveParameters()
+  kade.sensors.postValues()
 }
 
 kade.sensors.update = function () {
+  // Here sensors will be query'd every X mins for their stats
   setTimeout(kade.sensors.update, kade.conf.refreshRateSensors * 1000)
 
   kade.log('Getting sensors values');
@@ -42,8 +45,12 @@ kade.sensors.start = function () {
   kade.sensors.update()
 }
 
-kade.sensors.autoPost = function () {
-  setTimeout(kade.sensors.autoPost, kade.conf.refreshRateSensors * 1000)
+kade.sensors.postValues = function (){
   kade.log('Posting sensors values on the DHT...')
   kade.dht.publish( kade.sensors.prepValues() )
+}
+
+kade.sensors.autoPost = function () {
+  setTimeout(kade.sensors.autoPost, kade.conf.refreshRateSensors * 1000)
+  kade.sensors.postValues()
 }

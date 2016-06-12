@@ -5,7 +5,7 @@ var uuid = require('uuid')
 
 kade.rpc = {}
 
-kade.rpc.isValid = function (req) {
+kade.rpc.isValidNewSensor = function (req) {
   if (req === undefined )
     return 'ERROR: Invalid request'
   else if(typeof req !== 'object')
@@ -107,7 +107,7 @@ routerDHT.get('*', function(req, res) {
 
   if(query === 'query'){
     kade.dht.check(hash, function(value){
-      res.json(value)
+      res.send(value)
     })
   }
 });
@@ -202,7 +202,7 @@ routerSensors.put('*', function(req, res) {
 routerSensors.post('*', function(req, res) {
 
   // Sanity check
-  var sensor = kade.rpc.isValid(req.query)
+  var sensor = kade.rpc.isValidNewSensor(req.query)
 
   if( typeof sensor === 'string' )
     res.json( sensor ) // error

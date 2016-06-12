@@ -27,20 +27,12 @@ kade.dht.start()
 //kade.ap.start('normal')
 kade.rpc.start()
 
-
 kade.mldht.on('ready', function (err) {
-  if(err)
-    kade.dht.attemptStart(err)
-
-  kade.log('MLDHT reached')
-  clearTimeout(kade.dht.timeoutToken)
-  kade.sensors.autoPost()
+  kade.dht.ready()
 })
 
-
 process.on('SIGINT', function () {
-  //kade.ap.stop(function (msg) {
-  //  console.log(msg);
-  //})
+  if (kade.ap.createap !== undefined )
+    kade.ap.stop()
   process.exit();
-});
+})
