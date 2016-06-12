@@ -24,9 +24,9 @@ if( kade.isFirstStart() )
 kade.readParameters()
 
 kade.dht.start()
-kade.ap.start('normal')
-kade.sensors.start()
+//kade.ap.start('normal')
 kade.rpc.start()
+
 
 kade.mldht.on('ready', function (err) {
   if(err)
@@ -37,9 +37,10 @@ kade.mldht.on('ready', function (err) {
   kade.sensors.autoPost()
 })
 
+
 process.on('SIGINT', function () {
-  kade.ap.stop(function (msg) {
-    console.log(msg);
-  })
+  //kade.ap.stop(function (msg) {
+  //  console.log(msg);
+  //})
   process.exit();
 });

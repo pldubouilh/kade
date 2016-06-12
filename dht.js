@@ -23,6 +23,7 @@ kade.dht.attemptStart = function (err) {
   if (kade.mldht !== undefined)
     kade.mldht.destroy()
 
+  // TODO: If debug, spin local DHT
   kade.mldht = new DHT({ bootstrap: true, verify: kade.ed.verify })
 
   kade.dht.timeoutToken = setTimeout(function () {
@@ -51,16 +52,16 @@ kade.dht.publish = function(vals){
     else{
       console.log('    > DHT updated')
       kade.debug('    > ' + hash.toString('hex'))
-      //kade.dht.check(hash)
     }
   })
 }
 
-kade.dht.check = function(h){
+kade.dht.check = function(h, cb){
   kade.mldht.get(h, function (err, res) {
-    debugger
     if(err) kade.log(err)
-    kade.log(kade.decrypt(res.v))
+
+    if(cb !== undefined)
+      return cb( kade.decrypt(res.v).toString() )
   })
 }
 

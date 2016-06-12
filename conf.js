@@ -2,6 +2,7 @@ var kade = require('./main.js')
 var jf = require('jsonfile')
 
 kade.conf = {}
+kade.conf.ap = {}
 kade.parameters = {}
 
 kade.version = '0.0.1'

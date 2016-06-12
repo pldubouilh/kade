@@ -36,7 +36,13 @@ kade.genKeypair = function(){
     pwd: crypto.randomBytes(50),
     apName: randomstring.generate(10),
     apKey: randomstring.generate(20),
-    sensors: []
+    sensors: [{
+      name: 'kettle',
+      value: 'off'
+    },{
+      name: 'boiler',
+      value: 'off'
+    }]
   }
 
   jf.writeFileSync(kade.conf.location, params)

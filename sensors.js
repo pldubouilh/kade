@@ -34,7 +34,7 @@ kade.sensors.update = function () {
 }
 
 kade.sensors.prepValues = function() {
-  return JSON.stringify( kade.sensors.list )
+  return JSON.stringify( kade.parameters.sensors )
 }
 
 kade.sensors.start = function () {

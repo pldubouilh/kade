@@ -77,13 +77,40 @@ kade.rpc.findProp = function(sensorname, what){
 
 var app = express()
 var routerSensors = express.Router()
+var routerDHT = express.Router()
 app.use('/sensors', routerSensors)
+app.use('/dht', routerDHT)
 
 
 kade.rpc.start = function() {
   app.listen(kade.conf.rpcPort)
   kade.log('RPC started on port ' + kade.conf.rpcPort)
 }
+
+// Will match any GET /dht/*
+routerDHT.get('*', function(req, res) {
+
+  // Provide information on sensor if one's provided
+  if (req.originalUrl === '/sensors' ||  req.originalUrl === '/sensors/'){
+    res.json(kade.parameters.sensors) // barf all sensors
+    return
+  }
+
+  if ( req.originalUrl.split('/')[4] !== undefined){
+    res.json( 'ERROR: Too much args !' )
+    return
+  }
+
+  // Accept values such as /dht/query/hash
+  var query = req.originalUrl.split('/')[2]
+  var hash = req.originalUrl.split('/')[3]
+
+  if(query === 'query'){
+    kade.dht.check(hash, function(value){
+      res.json(value)
+    })
+  }
+});
 
 
 // Will match any GET /sensors/*

@@ -1,5 +1,5 @@
 var kade = require('./main.js')
-var CAP = require ('./create_ap.js')
+var CAP = require ('node-createap')
 
 kade.ap = {}
 
@@ -23,7 +23,7 @@ var normalConf = {
   wifiWPA: kade.parameters.apKey
 }
 
-kade.ap.start(mode){
+kade.ap.start = function(mode){
   if ( kade.ap.createap !== undefined )
     kade.ap.stop()
 
@@ -38,7 +38,7 @@ kade.ap.start(mode){
   }
 }
 
-kade.ap.stop(){
+kade.ap.stop = function(){
   if ( kade.ap.createap === undefined )
     return
 
