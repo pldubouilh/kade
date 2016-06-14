@@ -1,4 +1,4 @@
 node_modules
-conf/*
 tools
 test.js
+npm-debug.log

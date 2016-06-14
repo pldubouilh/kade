@@ -19,3 +19,8 @@ kade.decrypt = function (what){
 kade.sign = function (buf) {
   return kade.ed.sign(buf, kade.parameters.pub, kade.parameters.priv)
 }
+
+kade.generateCert = function(){
+  exec('openssl req -nodes -subj "/C=DE/ST=Internets/L=DHT/O=kade/OU=Org/CN=127.0.0.1" -x509 -newkey rsa:2048 -keyout conf/key.pem -out conf/cert.pem -days' + kade.conf.certDuration)
+  return 1
+}

@@ -19,7 +19,7 @@ var normalConf = {
   silent: kade.conf.ap.isVerb,
   wirelessInterface: kade.conf.ap.wifiif,
   wiredInterface: kade.conf.ap.wiredif,
-  wifiApName: kade.parameters.apName ,
+  wifiApName: kade.parameters.apName,
   wifiWPA: kade.parameters.apKey
 }
 

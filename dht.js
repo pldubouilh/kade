@@ -54,11 +54,11 @@ kade.dht.attemptStart = function (err) {
 kade.dht.ready = function (err) {
   if (--kade.dht.pending) return
 
-  if (err && err.host === "127.0.0.1"){
+  if (err && err.host === '127.0.0.1'){
     kade.log('Local DHT successfully spinned')
     kade.sensors.autoPost()
   }
-  else if(err && err.host !== "127.0.0.1")
+  else if(err && err.host !== '127.0.0.1')
     kade.dht.attemptStart(err)
   else if (err === undefined ){
     kade.log('MLDHT reached')

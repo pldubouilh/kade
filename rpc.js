@@ -1,9 +1,28 @@
 var kade = require('./main.js')
-var express = require('express')
 var validateUuid = require('uuid-validate')
 var uuid = require('uuid')
+var fs = require('fs')
+var https = require('https')
+var express = require('express')
 
 kade.rpc = {}
+
+// init
+var app = express()
+
+// routers
+var routerSensors = express.Router()
+var routerDHT = express.Router()
+app.use('/sensors', routerSensors)
+app.use('/dht', routerDHT)
+
+kade.rpc.start = function() {
+  https.createServer({
+    key: fs.readFileSync('conf/key.pem'),
+    cert: fs.readFileSync('conf/cert.pem')
+  }, app).listen(kade.conf.rpcPort);
+  kade.log('RPC started on port ' + kade.conf.rpcPort)
+}
 
 kade.rpc.isValidNewSensor = function (req) {
   if (req === undefined )
@@ -30,11 +49,14 @@ kade.rpc.isValidNewSensor = function (req) {
 kade.rpc.finder = function (query){
   var res = []
   var sensors = kade.parameters.sensors
+  query = query.toLowerCase()
 
   for(var i=0; i<sensors.length; i++){
     if ( sensors[i].uuid === query )
       return [sensors[i]] // return if match in uuid
-    else if( sensors[i].name.indexOf(query) !== -1 )
+    else if( sensors[i].name.toLowerCase().indexOf(query) !== -1 )
+      res.push(sensors[i])
+    else if( sensors[i].uuid.toLowerCase().indexOf(query) !== -1 )
       res.push(sensors[i])
   }
 
@@ -75,18 +97,6 @@ kade.rpc.findProp = function(sensorname, what){
 }
 
 
-var app = express()
-var routerSensors = express.Router()
-var routerDHT = express.Router()
-app.use('/sensors', routerSensors)
-app.use('/dht', routerDHT)
-
-
-kade.rpc.start = function() {
-  app.listen(kade.conf.rpcPort)
-  kade.log('RPC started on port ' + kade.conf.rpcPort)
-}
-
 // Will match any GET /dht/*
 routerDHT.get('*', function(req, res) {
 
@@ -105,12 +115,21 @@ routerDHT.get('*', function(req, res) {
   var query = req.originalUrl.split('/')[2]
   var hash = req.originalUrl.split('/')[3]
 
+  if ( hash.length !== 40 || ! /[0-9A-Fa-f]$/i.test(hash) ){
+    res.send('ERROR: Hash invalid')
+    return
+  }
+
   if(query === 'query'){
     kade.dht.check(hash, function(value){
       res.send(value)
     })
   }
+  else
+    res.send('ERROR: Invalid query')
 });
+
+
 
 
 // Will match any GET /sensors/*

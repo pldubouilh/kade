@@ -2,16 +2,30 @@
 Known Array of Decentralised Elements !
 
 ### Todo
+
  * RPC
    * Rudimentary API available. Functionality will come with future dev
- * Start working on a web gui
+
+ * Start working on a web gui > KISS
+  * basic setup listing devices, switch to pairing mode
+  * controls on what's available (status...)
+  * dev mode, manually add device, access to AP WPA
+
+* Phone app
+  * Access to controls on what's available (status...)
+  * Connect to pairing AP, scans QR, finishes up pairing
+
  * Setup new devices mode
+  * finish testing up node-createap
+  * Make pairing mode working properly
+    * device should full reboot if cant set interface in proper mode (happens)
+    * Check node-reboot
+
 
 ### Wifi
  * make create_ap wrapper for temp'd reboot mode
 
 ### RPC
-
   * Todo : cert pinning & HTTPS
   * Todo : Auth
 
