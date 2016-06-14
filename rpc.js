@@ -1,8 +1,6 @@
 var kade = require('./main.js')
 var validateUuid = require('uuid-validate')
 var uuid = require('uuid')
-var fs = require('fs')
-var https = require('https')
 var express = require('express')
 
 kade.rpc = {}
@@ -17,10 +15,7 @@ app.use('/sensors', routerSensors)
 app.use('/dht', routerDHT)
 
 kade.rpc.start = function() {
-  https.createServer({
-    key: fs.readFileSync('conf/key.pem'),
-    cert: fs.readFileSync('conf/cert.pem')
-  }, app).listen(kade.conf.rpcPort);
+  app.listen(kade.conf.rpcPort)
   kade.log('RPC started on port ' + kade.conf.rpcPort)
 }
 

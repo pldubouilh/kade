@@ -5,6 +5,7 @@ Known Array of Decentralised Elements !
 
  * RPC
    * Rudimentary API available. Functionality will come with future dev
+   * No tls, as no cert on 127.0.0.1/192.168.0.x/raspi.local possible. E2EE with pre shared         key, even for RPC.
 
  * Start working on a web gui > KISS
   * basic setup listing devices, switch to pairing mode

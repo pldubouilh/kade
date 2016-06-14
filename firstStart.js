@@ -23,7 +23,6 @@ kade.firstStart = function () {
 kade.genKeypair = function(){
 
   kade.log('Generating certificate')
-  kade.generateCert()
 
   kade.log('Generating new keypair ' + kade.conf.fileName )
   var keypair = kade.ed.createKeyPair(kade.ed.createSeed())
